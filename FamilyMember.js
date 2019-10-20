@@ -1,6 +1,9 @@
 class FamilyMember{
-  constructor(start_location_x,start_location_y){
+  constructor(data,character, start_location_x,start_location_y){
     this.name = "// IDEA: ";
+    this.data = data;
+    this.name_chn = data.name[1];
+    this.character = character;
     this.location = createVector(start_location_x,start_location_y);
     this.velocity = createVector(0,0);
     this.acceleration = createVector(0,0);
@@ -57,8 +60,10 @@ class FamilyMember{
     stroke(0);
     strokeWeight(1);
     push();
-      translate(this.location.x, this.location.y);
-      ellipse(0, 0, 50, 50);
+    translate(this.location.x, this.location.y);
+    imageMode(CENTER);
+    image(this.character, 0, 0, this.character.width/10, this.character.height/10);
+      // ellipse(0, 0, 80, 80);
     pop();
   }
 }
