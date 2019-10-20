@@ -58,14 +58,14 @@ function setup() {
 
   // initialize locations
   for(let i = 0; i < NUM; ++i){
-    list_layout[i] = createVector(windowWidth / 8 + 190, windowHeight / 7 + 52 * i + 70);
+    list_layout[i] = createVector(windowWidth / 8 + 160, 108 + 52 * i + 70);
   }
   // for(let i = 8; i < NUM; ++i){
   //   list_layout[i] = createVector(windowWidth * 4 / 8, windowHeight/6 + 60 * (i - 8));
   // }
   // for starters, assign list locations as targets
   for(let i = 0; i < NUM; ++i){
-    targets[i] = list_layout[i];
+    targets[i] = list_layout[i].copy();
   }
 
   // sss = createP("asdfasdgasjfasdfasdfsdf");
@@ -73,9 +73,11 @@ function setup() {
 
   // setup
   for (let i = 0; i < NUM; i++ ) {
-    emperors.push(new FamilyMember(emperors_data.emperors[i],images[i], list_layout[i].x, list_layout[i].y));
+    // emperors.push(new FamilyMember(emperors_data.emperors[i], images[i], windowWidth/2, windowHeight/2));
+    emperors.push(new FamilyMember(emperors_data.emperors[i], images[i], list_layout[i].x, list_layout[i].y,targets[i]));
   }
   console.log(emperors[0].name_chn);
+  console.log(windowHeight);
 
 }
 
@@ -100,10 +102,12 @@ function draw() {
     text("NAME", emperors[0].location.x + 280, 140);
     text("LIFESPAN", emperors[0].location.x + 480, 140);
     text("REIGN", emperors[0].location.x + 600, 140);
+    text("ORDER", emperors[0].location.x + 700, 140);
     for(let i = 0; i < NUM; ++i){
       fill(230);
       if(i%2===0){
-        rect(emperors[i].location.x - 32, emperors[i].location.y - 25, 720, 52);
+        rect(emperors[0].location.x - 32, 108 + 52 * i + 45, 810, 52);
+        // rect(emperors[i].location.x - 32, emperors[i].location.y - 25, 810, 52);
       }
     }
     if(!is_moving){
@@ -113,10 +117,11 @@ function draw() {
         text(emperors[i].name, emperors[i].location.x + 280, emperors[i].location.y);
         text(emperors[i].lifespan, emperors[i].location.x + 480, emperors[i].location.y);
         text(emperors[i].reign, emperors[i].location.x + 600, emperors[i].location.y);
+        text(emperors[i].order+1, emperors[i].location.x + 700, emperors[i].location.y);
       }
     }
   }
-  console.log(mode);
+  // console.log(mode);;
 
 
   // textAlign(LEFT, CENTER);
@@ -127,21 +132,46 @@ function draw() {
 
   // Call the appropriate steering behaviors for our agents
   for (let i = 0; i < NUM; i++ ) {
-    emperors[i].arrive(targets[i]);
-    emperors[i].update(targets[i]);
+    emperors[i].arrive();
+    emperors[i].update();
     emperors[i].display();
   }
+  console.log("0:"+emperors[0].born);
 }
 
 
 function keyPressed(){
   if (keyCode === 48) {
     mode = 0;
+    emperors.sort((a, b)=> a.order-b.order);
+    console.log(emperors);
+    for(let i = 0; i < NUM; ++i){
+      emperors[i].target = list_layout[i].copy();
+    }
   } else if(keyCode == 49){
     mode = 1;
   } else if(keyCode == 50){
     mode = 2;
-  } else if(keyCode == 51){
-    emperors.sort(function(a, b){return a.lifespan-b.lifespan});
+  } else if(keyCode == 51){ // 3
+    mode = 0;
+    emperors.sort((a, b)=> a.generation-b.generation);
+    console.log(emperors);
+    for(let i = 0; i < NUM; ++i){
+      emperors[i].target = list_layout[i].copy();
+    }
+  } else if(keyCode == 52){ // 4
+    mode = 0;
+    emperors.sort((a, b)=> a.born-b.born);
+    console.log(emperors);
+    for(let i = 0; i < NUM; ++i){
+      emperors[i].target = list_layout[i].copy();
+    }
+  } else if(keyCode == 57){ // 9
+    mode = 0;
+    // emperors.sort((a, b)=> a.order-b.order);
+    // console.log(emperors);
+    for(let i = 0; i < NUM; ++i){
+      emperors[i].target = list_layout[NUM - i - 1].copy();
+    }
   }
 }

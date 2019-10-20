@@ -1,5 +1,5 @@
 class FamilyMember{
-  constructor(data, character, start_location_x,start_location_y){
+  constructor(data, character, start_location_x, start_location_y, target){
     this.data = data;
     this.posthumous_name = data.posthumousName[0]+ " (" + data.posthumousName[1] + ")"
     this.name_chn = data.name[1];
@@ -7,6 +7,8 @@ class FamilyMember{
     this.name = this.name_eng + " (" + this.name_chn + ")";
     this.reign = data.reign[0] + " - " + data.reign[1];
     this.lifespan = data.born + " - " + data.died;
+    this.born = data.born;
+    this.throne = data.reign[0];
     this.generation = data.generation;
     this.order = data.order;
     this.character = character; // image
@@ -16,14 +18,15 @@ class FamilyMember{
     this.maxforce = 6;    // Maximum steering force
     this.maxspeed = 12;    // Maximum speed
     this.is_moving = false;
+    this.target = target;
   }
 
   // Method to update location
-  update(target) {
-    let desired = p5.Vector.sub(target, this.location);  // A vector pointing from the location to the target
+  update() {
+    let desired = p5.Vector.sub(this.target, this.location);  // A vector pointing from the location to the target
     let distance = desired.mag();
     if (distance < 1.5) {
-      this.location = target;
+      this.location = this.target;
     } else {
       // Update velocity
       this.velocity.add(this.acceleration);
@@ -44,8 +47,8 @@ class FamilyMember{
 
   // A method that calculates a steering force towards a target
   // STEER = DESIRED MINUS VELOCITY
-  arrive(target) {
-    let desired = p5.Vector.sub(target, this.location);  // A vector pointing from the location to the target
+  arrive() {
+    let desired = p5.Vector.sub(this.target, this.location);  // A vector pointing from the location to the target
     let distance = desired.mag();
     // Scale with arbitrary damping within 100 pixels
     if (distance < 100) {
