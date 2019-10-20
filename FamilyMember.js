@@ -1,11 +1,13 @@
 class FamilyMember{
-  constructor(data, character, start_location_x, start_location_y, target){
+  constructor(data, character, start_location_x, start_location_y){
     this.data = data;
     this.posthumous_name = data.posthumousName[0]+ " (" + data.posthumousName[1] + ")"
     this.name_chn = data.name[1];
     this.name_eng = data.name[0];
     this.name = this.name_eng + " (" + this.name_chn + ")";
     this.reign = data.reign[0] + " - " + data.reign[1];
+    this.reign_start = data.reign[0];
+    this.reign_end = data.reign[1];
     this.lifespan = data.born + " - " + data.died;
     this.born = data.born;
     this.throne = data.reign[0];
@@ -18,15 +20,16 @@ class FamilyMember{
     this.maxforce = 6;    // Maximum steering force
     this.maxspeed = 12;    // Maximum speed
     this.is_moving = false;
-    this.target = target;
+    // this.target = target;
   }
 
   // Method to update location
-  update() {
-    let desired = p5.Vector.sub(this.target, this.location);  // A vector pointing from the location to the target
+  update(target) {
+    let desired = p5.Vector.sub(target, this.location);  // A vector pointing from the location to the target
     let distance = desired.mag();
     if (distance < 1.5) {
-      this.location = this.target;
+      this.location = target;
+      this.is_moving = false;
     } else {
       // Update velocity
       this.velocity.add(this.acceleration);
@@ -47,8 +50,8 @@ class FamilyMember{
 
   // A method that calculates a steering force towards a target
   // STEER = DESIRED MINUS VELOCITY
-  arrive() {
-    let desired = p5.Vector.sub(this.target, this.location);  // A vector pointing from the location to the target
+  arrive(target) {
+    let desired = p5.Vector.sub(target, this.location);  // A vector pointing from the location to the target
     let distance = desired.mag();
     // Scale with arbitrary damping within 100 pixels
     if (distance < 100) {
@@ -80,5 +83,9 @@ class FamilyMember{
     image(this.character, 0, 0, this.character.width/16, this.character.height/16);
       // ellipse(0, 0, 80, 80);
     pop();
+  }
+
+  showSpan(){
+
   }
 }
