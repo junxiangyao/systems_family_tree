@@ -148,25 +148,47 @@ function keyPressed(){
     for(let i = 0; i < NUM; ++i){
       emperors[i].target = list_layout[i].copy();
     }
-  } else if(keyCode == 49){
+  } else if(keyCode === 49){
     mode = 1;
-  } else if(keyCode == 50){
+  } else if(keyCode === 50){
     mode = 2;
-  } else if(keyCode == 51){ // 3
+  } else if(keyCode === 51){ // 3
     mode = 0;
     emperors.sort((a, b)=> a.generation-b.generation);
     console.log(emperors);
     for(let i = 0; i < NUM; ++i){
       emperors[i].target = list_layout[i].copy();
     }
-  } else if(keyCode == 52){ // 4
+  } else if(keyCode === 52){ // 4
     mode = 0;
     emperors.sort((a, b)=> a.born-b.born);
     console.log(emperors);
     for(let i = 0; i < NUM; ++i){
       emperors[i].target = list_layout[i].copy();
     }
-  } else if(keyCode == 57){ // 9
+  } else if(keyCode === 53){ // 5 name alphabetical
+    mode = 0;
+    emperors.sort(function(a, b){
+      if(a.name_eng < b.name_eng) { return -1; }
+      if(a.name_eng > b.name_eng) { return 1; }
+      return 0;
+    });
+    console.log(emperors);
+    for(let i = 0; i < NUM; ++i){
+      emperors[i].target = list_layout[i].copy();
+    }
+  } else if(keyCode === 54){ // 6 posthumous_name alphabetical
+    mode = 0;
+    emperors.sort(function(a, b){
+      if(a.posthumous_name < b.posthumous_name) { return -1; }
+      if(a.posthumous_name > b.posthumous_name) { return 1; }
+      return 0;
+    });
+    console.log(emperors);
+    for(let i = 0; i < NUM; ++i){
+      emperors[i].target = list_layout[i].copy();
+    }
+  } else if(keyCode === 57){ // 9
     mode = 0;
     // emperors.sort((a, b)=> a.order-b.order);
     // console.log(emperors);
