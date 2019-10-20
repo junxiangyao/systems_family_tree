@@ -1,14 +1,21 @@
 class FamilyMember{
-  constructor(data,character, start_location_x,start_location_y){
-    this.name = "// IDEA: ";
+  constructor(data, character, start_location_x,start_location_y){
     this.data = data;
+    this.posthumous_name = data.posthumousName[0]+ " (" + data.posthumousName[1] + ")"
     this.name_chn = data.name[1];
-    this.character = character;
+    this.name_eng = data.name[0];
+    this.name = this.name_eng + " (" + this.name_chn + ")";
+    this.reign = data.reign[0] + " - " + data.reign[1];
+    this.lifespan = data.born + " - " + data.died;
+    this.generation = data.generation;
+    this.order = data.order;
+    this.character = character; // image
     this.location = createVector(start_location_x,start_location_y);
     this.velocity = createVector(0,0);
     this.acceleration = createVector(0,0);
     this.maxforce = 6;    // Maximum steering force
     this.maxspeed = 12;    // Maximum speed
+    this.is_moving = false;
   }
 
   // Method to update location
@@ -61,8 +68,13 @@ class FamilyMember{
     strokeWeight(1);
     push();
     translate(this.location.x, this.location.y);
+    textAlign(LEFT, CENTER);
+    textSize(14);
+    fill(33);
+    noStroke();
+    text(this.posthumous_name,32,0);
     imageMode(CENTER);
-    image(this.character, 0, 0, this.character.width/10, this.character.height/10);
+    image(this.character, 0, 0, this.character.width/16, this.character.height/16);
       // ellipse(0, 0, 80, 80);
     pop();
   }

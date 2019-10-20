@@ -6,7 +6,7 @@
  *                                                      *
  ********************************************************/
 //layout
-let horizontalMargin = 150;
+let horizontalMargin = 170;
 let verticalMargin = 140;
 
 let emperors_data = {}; //? why ={} is a necessary?
@@ -46,6 +46,8 @@ let emperors = [];
 
 const NUM = 11;
 
+let sss;
+
 function setup() {
   createCanvas(windowWidth,windowHeight);
   // load images
@@ -55,50 +57,91 @@ function setup() {
   }
 
   // initialize locations
-  for(let i = 0; i < 6; ++i){
-    list_layout[i] = createVector(windowWidth / 8, windowHeight / 4 + 80 * i);
+  for(let i = 0; i < NUM; ++i){
+    list_layout[i] = createVector(windowWidth / 8 + 190, windowHeight / 7 + 52 * i + 70);
   }
-  for(let i = 6; i < NUM; ++i){
-    list_layout[i] = createVector(windowWidth * 4 / 8, windowHeight/4 + 80 * (i - 6));
-  }
+  // for(let i = 8; i < NUM; ++i){
+  //   list_layout[i] = createVector(windowWidth * 4 / 8, windowHeight/6 + 60 * (i - 8));
+  // }
   // for starters, assign list locations as targets
   for(let i = 0; i < NUM; ++i){
     targets[i] = list_layout[i];
   }
+
+  // sss = createP("asdfasdgasjfasdfasdfsdf");
+  // sss.position(windowWidth/2, windowHeight/2);
 
   // setup
   for (let i = 0; i < NUM; i++ ) {
     emperors.push(new FamilyMember(emperors_data.emperors[i],images[i], list_layout[i].x, list_layout[i].y));
   }
   console.log(emperors[0].name_chn);
+
 }
 
 function draw() {
   background(240);
-  let mouse = createVector(mouseX, mouseY);
-  // Draw an ellipse at the mouse location
-  fill(200);
-  stroke(0);
-  strokeWeight(2);
-  ellipse(mouse.x, mouse.y, 48, 48);
+  textAlign(CENTER, CENTER);
+  textSize(30);
+  fill(33);
+  noStroke();
+  text("Family tree of Eastern Jin Emperors", windowWidth/2 ,46);
+  textSize(22);
+  text("317 - 420 AD, China", windowWidth/2 ,82);
+  // stroke(1);
+  // line(windowWidth/2-90,110,windowWidth/2+90,110)
+
+  if(mode === 0){
+    textAlign(LEFT, CENTER);
+    textSize(16);
+    fill(33);
+    noStroke();
+    text("POSTHUMOUS NAME", emperors[0].location.x + 32, 140);
+    text("NAME", emperors[0].location.x + 280, 140);
+    text("LIFESPAN", emperors[0].location.x + 480, 140);
+    text("REIGN", emperors[0].location.x + 600, 140);
+    for(let i = 0; i < NUM; ++i){
+      fill(230);
+      if(i%2===0){
+        rect(emperors[i].location.x - 32, emperors[i].location.y - 25, 720, 52);
+      }
+    }
+    if(!is_moving){
+      for(let i = 0; i < NUM; ++i){
+        fill(33);
+        textSize(14);
+        text(emperors[i].name, emperors[i].location.x + 280, emperors[i].location.y);
+        text(emperors[i].lifespan, emperors[i].location.x + 480, emperors[i].location.y);
+        text(emperors[i].reign, emperors[i].location.x + 600, emperors[i].location.y);
+      }
+    }
+  }
+  console.log(mode);
 
 
+  // textAlign(LEFT, CENTER);
+  // textSize(14);
+  // fill(33);
+  // noStroke();
+  // text("Emperor Yuan of Jin (晋元帝)", horizontalMargin + 48 ,130);
 
   // Call the appropriate steering behaviors for our agents
   for (let i = 0; i < NUM; i++ ) {
-    // emperors[i].arrive(mouse);
-    // emperors[i].update(mouse);
+    emperors[i].arrive(targets[i]);
+    emperors[i].update(targets[i]);
     emperors[i].display();
   }
 }
 
 
 function keyPressed(){
-  if (mode === 0) {
+  if (keyCode === 48) {
     mode = 0;
-  } else if(value == 1){
+  } else if(keyCode == 49){
     mode = 1;
-  } else if(value ==2){
+  } else if(keyCode == 50){
     mode = 2;
+  } else if(keyCode == 51){
+    emperors.sort(function(a, b){return a.lifespan-b.lifespan});
   }
 }
