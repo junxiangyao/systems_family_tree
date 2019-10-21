@@ -17,6 +17,7 @@ function preload() {
 
 let is_moving = false;
 let mode_change = false;
+let tree_element_height = [0, 0, -1, 0, 0, -2, -1, 2, 2, 1, 2]; //should be revised later so that it is not har coded
 
 function windowResized(){
   if(windowWidth > 800){
@@ -27,7 +28,7 @@ function windowResized(){
 //---------------------------------
 // Mode Change
 //---------------------------------
-let mode = 1;
+let mode = 0;
 /******************
   0 : List
   1 : Timeline
@@ -72,6 +73,10 @@ function setup() {
     emperors[i].reign_start_in_window = createVector(map(emperors[i].reign_start, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 110 + 50 * i);
     emperors[i].reign_end_in_window = createVector(map(emperors[i].reign_end, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 110 + 50 * i);
     timeline_layout[i] =   emperors[i].born_in_window.copy();
+  }
+
+  for(let i = 0; i < NUM; ++i){
+    tree_layout[i] = createVector(horizontalMargin + emperors[i].generation * 300, windowHeight/2 + 120 * tree_element_height[i]);
   }
 
   console.log(emperors[0].name_chn);
@@ -122,7 +127,23 @@ function draw() {
   }else if(mode === 1){
     strokeWeight(2);
     stroke(0,0,0,50);
-    line(horizontalMargin, 660 , windowWidth - horizontalMargin, 660);
+    line(horizontalMargin - 20, 660 , windowWidth - horizontalMargin + 22, 660);
+    strokeWeight(16);
+    stroke(235,118,107);
+    point(map(emperors_data.length[0], 276, 421, horizontalMargin, windowWidth - horizontalMargin),660);
+    point(map(emperors_data.length[1], 276, 421, horizontalMargin, windowWidth - horizontalMargin),660);
+    strokeWeight(2);
+    line(map(emperors_data.length[0], 276, 421, horizontalMargin, windowWidth - horizontalMargin),660,
+    map(emperors_data.length[1], 276, 421, horizontalMargin, windowWidth - horizontalMargin),660);
+    textAlign(LEFT, CENTER);
+    textSize(20);
+    fill(10);
+    noStroke();
+    textAlign(CENTER, CENTER);
+    text(emperors_data.length[0]+" AD",map(emperors_data.length[0], 276, 421, horizontalMargin, windowWidth - horizontalMargin),690);
+    text(emperors_data.length[1]+" AD",map(emperors_data.length[1], 276, 421, horizontalMargin, windowWidth - horizontalMargin),690);
+  }else if(mode === 2){
+
   }
 
   is_moving = false;  // *****1 set is_moving to false no matter what
@@ -133,7 +154,18 @@ function draw() {
     if(mode===1){
       emperors[i].drawSpan();
     }
-    emperors[i].display();
+  }
+  // the loop is devided into two parts for a better overlaying appearence in the canvas
+  for (let i = 0; i < NUM; i++ ) {
+    if(mode===1){
+      if(emperors[i].show_line || this.is_hover){
+        emperors[i].drawLines();
+      }
+      // if(this.is_hover){
+        emperors[i].showNumbers();
+      // }
+    }
+    emperors[i].display(mode);
     if(emperors[i].is_moving){ // *****2 check if there is any moving members, if there is one, change is_moving to true
       is_moving = true;
     }
@@ -164,7 +196,12 @@ function keyPressed(){
     }
   } else if(keyCode === 50){ // 2
     mode_change = true;
+    is_moving = true;
     mode = 2;
+    for(let i = 0; i < NUM; ++i){
+      emperors[i].is_moving = true;
+      targets[i] = tree_layout[i].copy();
+    }
   } else if(keyCode === 51){ // 3 generation
     if(mode === 1 || mode === 2){
       mode_change = true;
