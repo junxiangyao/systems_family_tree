@@ -67,15 +67,17 @@ function setup() {
     emperors.push(new FamilyMember(emperors_data.emperors[i], images[i], list_layout[i].x, list_layout[i].y,targets[i]));
   }
   for(let i = 0; i < NUM; ++i){
-    emperors[i].born_in_window = createVector(map(emperors[i].born, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 108 + 52 * i + 70);
-    emperors[i].died_in_window = createVector(map(emperors[i].died, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 108 + 52 * i + 70);
-    emperors[i].reign_start_in_window = createVector(map(emperors[i].reign_start, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 108 + 52 * i + 70);
-    emperors[i].reign_end_in_window = createVector(map(emperors[i].reign_end, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 108 + 52 * i + 70);
+    emperors[i].born_in_window = createVector(map(emperors[i].born, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 110 + 50 * i);
+    emperors[i].died_in_window = createVector(map(emperors[i].died, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 110 + 50 * i);
+    emperors[i].reign_start_in_window = createVector(map(emperors[i].reign_start, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 110 + 50 * i);
+    emperors[i].reign_end_in_window = createVector(map(emperors[i].reign_end, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 110 + 50 * i);
     timeline_layout[i] =   emperors[i].born_in_window.copy();
   }
 
   console.log(emperors[0].name_chn);
   console.log(windowHeight);
+  console.log(emperors[0].born_in_window);
+  console.log(emperors[0].died_in_window);
 }
 
 function draw() {
@@ -102,7 +104,7 @@ function draw() {
     text("ORDER", emperors[0].location.x + 700, 140);
     for(let i = 0; i < NUM; ++i){
       fill(230);
-      if(i%2===0){
+      if(i%2 === 0){
         rect(emperors[0].location.x - 32, 108 + 52 * i + 45, 810, 52);
         // rect(emperors[i].location.x - 32, emperors[i].location.y - 25, 810, 52);
       }
@@ -114,13 +116,13 @@ function draw() {
         text(emperors[i].name, emperors[i].location.x + 280, emperors[i].location.y);
         text(emperors[i].lifespan, emperors[i].location.x + 480, emperors[i].location.y);
         text(emperors[i].reign, emperors[i].location.x + 600, emperors[i].location.y);
-        text(emperors[i].order+1, emperors[i].location.x + 700, emperors[i].location.y);
+        text(emperors[i].order + 1, emperors[i].location.x + 700, emperors[i].location.y);
       }
     }
   }else if(mode === 1){
     strokeWeight(2);
-    stroke(200);
-    line(horizontalMargin, 465 , windowWidth - horizontalMargin, 465);
+    stroke(0,0,0,50);
+    line(horizontalMargin, 660 , windowWidth - horizontalMargin, 660);
   }
 
   is_moving = false;  // *****1 set is_moving to false no matter what
@@ -128,12 +130,15 @@ function draw() {
   for (let i = 0; i < NUM; i++ ) {
     emperors[i].arrive(targets[i]);
     emperors[i].update(targets[i]);
+    if(mode===1){
+      emperors[i].drawSpan();
+    }
     emperors[i].display();
     if(emperors[i].is_moving){ // *****2 check if there is any moving members, if there is one, change is_moving to true
       is_moving = true;
     }
   }
-  if(!is_moving){mode_change = false;}// *****3 if is_moving is false, that means all the members are done with moving, so mode_change is over, change it to false.
+  if(!is_moving){mode_change = false;} // *****3 if is_moving is false, that means all the members are done with moving, so mode_change is over, change it to false.
 }
 
 function keyPressed(){

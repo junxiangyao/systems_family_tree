@@ -10,6 +10,7 @@ class FamilyMember{
     this.reign_end = data.reign[1];
     this.lifespan = data.born + " - " + data.died;
     this.born = data.born;
+    this.died = data.died;
     this.throne = data.reign[0];
     this.generation = data.generation;
     this.order = data.order;
@@ -88,7 +89,22 @@ class FamilyMember{
     pop();
   }
 
-  showSpan(){
+  drawSpan(){
+    stroke(0,0,0,50);
+    strokeWeight(10);
+    push();
+    translate(this.location.x, this.location.y);
+    // line(this.location.x, this.location.y, this.born_in_window, this.died_in_window);
+    line(0, 17,(this.died_in_window.x - this.born_in_window.x), 17);
 
+    stroke(235,33,6,120);
+    strokeWeight(10);
+    if(this.reign_end_in_window.x - this.reign_start_in_window.x === 0){
+      point((this.reign_start_in_window.x - this.born_in_window.x), 17);
+    }else{
+      line((this.reign_start_in_window.x - this.born_in_window.x), 17, (this.reign_end_in_window.x - this.born_in_window.x), 17);
+    }
+    // console.log((this.died_in_window.x - this.born_in_window.x));
+    pop();
   }
 }
