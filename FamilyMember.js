@@ -20,6 +20,10 @@ class FamilyMember{
     this.maxforce = 6;    // Maximum steering force
     this.maxspeed = 12;    // Maximum speed
     this.is_moving = false;
+    this.born_in_window;
+    this.died_in_window;
+    this.reign_start_in_window;
+    this.reign_end_in_window;
     // this.target = target;
   }
 
@@ -81,7 +85,6 @@ class FamilyMember{
     text(this.posthumous_name,32,0);
     imageMode(CENTER);
     image(this.character, 0, 0, this.character.width/16, this.character.height/16);
-      // ellipse(0, 0, 80, 80);
     pop();
   }
 

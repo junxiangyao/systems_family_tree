@@ -58,22 +58,20 @@ function setup() {
   for(let i = 0; i < NUM; ++i){
     list_layout[i] = createVector(windowWidth / 8 + 160, 108 + 52 * i + 70);
   }
-  // for(let i = 8; i < NUM; ++i){
-  //   list_layout[i] = createVector(windowWidth * 4 / 8, windowHeight/6 + 60 * (i - 8));
-  // }
   // for starters, assign list locations as targets
   for(let i = 0; i < NUM; ++i){
     targets[i] = list_layout[i].copy();
   }
-
   // setup
   for (let i = 0; i < NUM; i++ ) {
-    // emperors.push(new FamilyMember(emperors_data.emperors[i], images[i], windowWidth/2, windowHeight/2));
     emperors.push(new FamilyMember(emperors_data.emperors[i], images[i], list_layout[i].x, list_layout[i].y,targets[i]));
   }
-
   for(let i = 0; i < NUM; ++i){
-    timeline_layout[i] = createVector(map(emperors[i].born, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 108 + 52 * i + 70);
+    emperors[i].born_in_window = createVector(map(emperors[i].born, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 108 + 52 * i + 70);
+    emperors[i].died_in_window = createVector(map(emperors[i].died, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 108 + 52 * i + 70);
+    emperors[i].reign_start_in_window = createVector(map(emperors[i].reign_start, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 108 + 52 * i + 70);
+    emperors[i].reign_end_in_window = createVector(map(emperors[i].reign_end, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 108 + 52 * i + 70);
+    timeline_layout[i] =   emperors[i].born_in_window.copy();
   }
 
   console.log(emperors[0].name_chn);
@@ -124,13 +122,7 @@ function draw() {
     stroke(200);
     line(horizontalMargin, 465 , windowWidth - horizontalMargin, 465);
   }
-  // console.log(mode);
 
-  // textAlign(LEFT, CENTER);
-  // textSize(14);
-  // fill(33);
-  // noStroke();
-  // text("Emperor Yuan of Jin (晋元帝)", horizontalMargin + 48 ,130);
   is_moving = false;  // *****1 set is_moving to false no matter what
   // Call the appropriate steering behaviors for our agents
   for (let i = 0; i < NUM; i++ ) {
@@ -142,7 +134,6 @@ function draw() {
     }
   }
   if(!is_moving){mode_change = false;}// *****3 if is_moving is false, that means all the members are done with moving, so mode_change is over, change it to false.
-  console.log("0:"+emperors[0].born);
 }
 
 function keyPressed(){
@@ -231,8 +222,7 @@ function keyPressed(){
     }
     mode = 0;
     is_moving = true;
-    // emperors.sort((a, b)=> a.order-b.order);
-    // console.log(emperors);
+    console.log(emperors);
     for(let i = 0; i < NUM; ++i){
       emperors[i].is_moving = true;
       targets[i] = list_layout[NUM - i - 1].copy();
