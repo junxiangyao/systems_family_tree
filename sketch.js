@@ -48,6 +48,8 @@ let emperors = [];
 
 const NUM = 11;
 
+let button;
+
 function setup() {
   createCanvas(windowWidth,windowHeight);
   // load images
@@ -83,6 +85,23 @@ function setup() {
   console.log(windowHeight);
   console.log(emperors[0].born_in_window);
   console.log(emperors[0].died_in_window);
+
+
+  buttons[0] = createButton('List');
+  buttons[1] = createButton('Timeline');
+  buttons[2] = createButton('Tree');
+
+  buttons.forEach(function(element,i) {
+    element.position(20, 80 * i + 20);
+    element.addClass('button');
+    element.addClass('button:hover');
+    element.addClass('button:focus');
+  });
+  buttons[0].mousePressed(toList);
+  buttons[1].mousePressed(toTimeline);
+  buttons[2].mousePressed(toTree);
+  buttons[0].attribute('autofocus', 'true');
+  // button.mouseOver(onList).mouseOut(outList);
 }
 
 function draw() {
@@ -173,35 +192,14 @@ function draw() {
   if(!is_moving){mode_change = false;} // *****3 if is_moving is false, that means all the members are done with moving, so mode_change is over, change it to false.
 }
 
+
 function keyPressed(){
   if (keyCode === 48) {
-    if(mode === 1 || mode === 2){
-      mode_change = true;
-    }
-    mode = 0;
-    is_moving = true;
-    emperors.sort((a, b)=> a.order-b.order);
-    console.log(emperors);
-    for(let i = 0; i < NUM; ++i){
-      emperors[i].is_moving = true;
-      targets[i] = list_layout[i].copy();
-    }
+    toList();
   } else if(keyCode === 49){ // 1
-    mode = 1;
-    is_moving = true;
-    mode_change = true;
-    for(let i = 0; i < NUM; ++i){
-      emperors[i].is_moving = true;
-      targets[i] = timeline_layout[i].copy();
-    }
+    toTimeline();
   } else if(keyCode === 50){ // 2
-    mode_change = true;
-    is_moving = true;
-    mode = 2;
-    for(let i = 0; i < NUM; ++i){
-      emperors[i].is_moving = true;
-      targets[i] = tree_layout[i].copy();
-    }
+    toTree();
   } else if(keyCode === 51){ // 3 generation
     if(mode === 1 || mode === 2){
       mode_change = true;
@@ -271,3 +269,41 @@ function keyPressed(){
     }
   }
 }
+
+function toList(){
+  if(mode === 1 || mode === 2){
+    mode_change = true;
+  }
+  mode = 0;
+  is_moving = true;
+  emperors.sort((a, b)=> a.order-b.order);
+  console.log(emperors);
+  for(let i = 0; i < NUM; ++i){
+    emperors[i].is_moving = true;
+    targets[i] = list_layout[i].copy();
+  }
+}
+function toTimeline(){
+  mode = 1;
+  is_moving = true;
+  mode_change = true;
+  emperors.sort((a, b)=> a.order-b.order);
+  console.log(emperors);
+  for(let i = 0; i < NUM; ++i){
+    emperors[i].is_moving = true;
+    targets[i] = timeline_layout[i].copy();
+  }
+}
+function toTree(){
+  mode_change = true;
+  is_moving = true;
+  mode = 2;
+  emperors.sort((a, b)=> a.order-b.order);
+  console.log(emperors);
+  for(let i = 0; i < NUM; ++i){
+    emperors[i].is_moving = true;
+    targets[i] = tree_layout[i].copy();
+  }
+}
+// function onList(){button.style('background-color', 'black');}
+// function outList(){button.style('background-color', 'rgb(242,242,242)');}
