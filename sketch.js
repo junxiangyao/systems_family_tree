@@ -52,6 +52,8 @@ let black_labels = [];
 let red_labels = [];
 let test;
 
+const ALPHA_ACCUMULATOR = 1;
+let alpha = 255; // fade in
 function setup() {
   createCanvas(windowWidth,windowHeight);
   // load images
@@ -146,7 +148,10 @@ function draw() {
     }
     if(!mode_change){
       for(let i = 0; i < NUM; ++i){
-        fill(33);
+        if(alpha < 255){
+          alpha += ALPHA_ACCUMULATOR;
+        }
+        fill(33,33,33,alpha);
         textSize(14);
         text(emperors[i].name, emperors[i].location.x + 280, emperors[i].location.y);
         text(emperors[i].lifespan, emperors[i].location.x + 480, emperors[i].location.y);
@@ -319,6 +324,7 @@ function keyPressed(){
 function toList(){
   if(mode === 1 || mode === 2){
     mode_change = true;
+    alpha = 0;
   }
   mode = 0;
   is_moving = true;
