@@ -125,7 +125,7 @@ class FamilyMember{
       this.contentHTML.show();
       this.contentHTML.position(this.location.x + 32, this.location.y + 70);
     }else{
-      // this.contentHTML.hide();
+      this.contentHTML.hide();
     }
 
 
