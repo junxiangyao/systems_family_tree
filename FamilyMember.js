@@ -13,7 +13,9 @@ class FamilyMember{
     this.lifespan = data.born + " - " + data.died;
     this.born = data.born;
     this.died = data.died;
-    this.throne = data.reign[0];
+    this.lifespan_yrs = data.died - data.born;
+    this.throne_yrs = this.reign_end - this.reign_start;
+    // this.throne = data.reign[0];
     this.generation = data.generation;
     this.order = data.order;
     this.character = character; // image
@@ -33,6 +35,7 @@ class FamilyMember{
     this.contentHTML = createA(this.data.wiki,"Wikipedia");
     this.contentHTML.attribute("target","_blank");
     this.contentHTML.style("font_size","12px");
+    this.normal_size = 14;
   }
 
   // Method to update location
@@ -79,6 +82,7 @@ class FamilyMember{
 
   display(mode){
     // Draw a triangle rotated in the direction of velocity
+    let acc = 0.2;
     fill(127);
     stroke(0);
     strokeWeight(1);
@@ -96,12 +100,18 @@ class FamilyMember{
       text(this.posthumous_name_eng,32,0);
     }
     imageMode(CENTER);
-    image(this.character, 0, 0, this.character.width/16, this.character.height/16);
+    if(mode === 2 && (this.is_hover || this.is_click)){
+      if(this.normal_size > 14){this.normal_size-=acc;}else{this.normal_size = 14;}
+      image(this.character, 0, 0, this.character.width/this.normal_size, this.character.height/this.normal_size);
+    }else{
+      if(this.normal_size < 16){this.normal_size+=acc;}else{this.normal_size = 16;}
+      image(this.character, 0, 0, this.character.width/this.normal_size, this.character.height/this.normal_size);
+    }
     pop();
   }
 
   showP(){
-    if(this.is_hover){
+    if(this.is_hover || this.is_click){
       push();
       translate(this.location.x, this.location.y);
       textAlign(LEFT, CENTER);
@@ -109,8 +119,8 @@ class FamilyMember{
       fill(33);
       noStroke();
       text(this.name_eng,32,20);
-      text("Lifespan: " + this.lifespan,32,40);
-      text("Reign: " + this.reign,32,60);
+      text("Lifespan: " + this.lifespan + " (" + this.lifespan_yrs + " yrs)",32,40);
+      text("Reign: " + this.reign + " (" + this.throne_yrs + " yrs)",32,60);
       pop();
       this.contentHTML.show();
       this.contentHTML.position(this.location.x + 32, this.location.y + 70);

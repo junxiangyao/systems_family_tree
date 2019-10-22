@@ -279,7 +279,6 @@ function draw() {
       if(mouseX > (element.location.x - 24) && mouseX < (element.location.x + 50)
         && mouseY > (element.location.y - 24)&& mouseY < (element.location.y + 24)){
           element.is_hover = true;
-          console.log("!!!!!!");
       }
     });
   }
@@ -375,8 +374,8 @@ function keyPressed(){
 function mousePressed(){
   // 3 buttons for mode changing
 
-  // 4 buttons in list layout mode for sorting;
-  if(mode === 0){
+
+  if(mode === 0){// 4 buttons in list layout mode for sorting;
     if(mouseX > (emperors[0].location.x - 24) && mouseX < (emperors[0].location.x + 280)
       && mouseY > 130 && mouseY < 150){
         for(let i = 0; i < mode_0_sort.length; ++i){
@@ -422,6 +421,15 @@ function mousePressed(){
           toList();
         }
     }
+
+  }else if(mode === 2){// click for detail in tree mode
+    emperors.forEach(function(element){
+      if(mouseX > (element.location.x - 24) && mouseX < (element.location.x + 50)
+        && mouseY > (element.location.y - 24)&& mouseY < (element.location.y + 24)){
+          emperors.forEach(function(e){e.is_click = false;});
+          element.is_click = true;
+      }
+    });
   }
 }
 function toList(){
@@ -429,6 +437,10 @@ function toList(){
     mode_change = true;
     alpha = 0;
   }
+  for(let i = 0; i < mode_0_sort.length; ++i){
+    mode_0_sort[i] = false;
+  }
+  mode_0_sort[3] = true;
   mode = 0;
   is_moving = true;
   inverted = false;
@@ -438,6 +450,9 @@ function toList(){
     emperors[i].is_moving = true;
     targets[i] = list_layout[i].copy();
   }
+  emperors.forEach(function(element){
+    element.is_click = false;
+  });
 }
 function toTimeline(){
   alpha = 0;
@@ -450,6 +465,10 @@ function toTimeline(){
     emperors[i].is_moving = true;
     targets[i] = timeline_layout[i].copy();
   }
+  emperors.forEach(function(element){
+    element.is_click = false;
+    element.contentHTML.hide();
+  });
 }
 function toTree(){
   mode_change = true;
@@ -461,6 +480,10 @@ function toTree(){
     emperors[i].is_moving = true;
     targets[i] = tree_layout[i].copy();
   }
+  emperors.forEach(function(element){
+    element.is_click = false;
+    element.contentHTML.hide();
+  });
 }
 function toListAge(){
   if(mode === 1 || mode === 2){
@@ -474,6 +497,10 @@ function toListAge(){
     emperors[i].is_moving = true;
     targets[i] = list_layout[i].copy();
   }
+  emperors.forEach(function(element){
+    element.is_click = false;
+    element.contentHTML.hide();
+  });
 }
 function toListName(){
   if(mode === 1 || mode === 2){
@@ -491,6 +518,10 @@ function toListName(){
     emperors[i].is_moving = true;
     targets[i] = list_layout[i].copy();
   }
+  emperors.forEach(function(element){
+    element.is_click = false;
+    element.contentHTML.hide();
+  });
 }
 function toListPosthumous(){
   if(mode === 1 || mode === 2){
@@ -508,6 +539,10 @@ function toListPosthumous(){
     emperors[i].is_moving = true;
     targets[i] = list_layout[i].copy();
   }
+  emperors.forEach(function(element){
+    element.is_click = false;
+    element.contentHTML.hide();
+  });
 }
 function toListInvert(){
   if(mode === 1 || mode === 2){
@@ -520,6 +555,10 @@ function toListInvert(){
     emperors[i].is_moving = true;
     targets[i] = list_layout[NUM - i - 1].copy();
   }
+  emperors.forEach(function(element){
+    element.is_click = false;
+    element.contentHTML.hide();
+  });
 }
 // function onList(){button.style('background-color', 'black');}
 // function outList(){button.style('background-color', 'rgb(242,242,242)');}
