@@ -395,9 +395,8 @@ function mousePressed(){
   buttons.forEach(function(element, i){
     let distance = dist(mouseX, mouseY, element.location.x, element.location.y);
     if(distance < 30){
-      mode = i;
+          if(i === 0){toList();}else if(i === 1){toTimeline();}else if(i === 2){toTree();}
     }
-    if(mode === 0){toList();}else if(mode === 1){toTimeline();}else if(mode === 2){toTree();}
 
   });
 
@@ -481,6 +480,7 @@ function toList(){
   }
   emperors.forEach(function(element){
     element.is_click = false;
+    element.contentHTML.hide();
   });
 }
 function toTimeline(){

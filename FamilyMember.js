@@ -34,7 +34,7 @@ class FamilyMember{
     this.is_click = false;
     this.contentHTML = createA(this.data.wiki,"Wikipedia");
     this.contentHTML.attribute("target","_blank");
-    this.contentHTML.style("font_size","12px");
+    // this.contentHTML.style("font_size","12px");
     this.normal_size = 14;
   }
 
@@ -125,7 +125,7 @@ class FamilyMember{
       this.contentHTML.show();
       this.contentHTML.position(this.location.x + 32, this.location.y + 70);
     }else{
-      this.contentHTML.hide();
+      // this.contentHTML.hide();
     }
 
 
