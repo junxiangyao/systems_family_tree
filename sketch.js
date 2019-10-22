@@ -53,7 +53,7 @@ let red_labels = [];
 let test;
 
  // fade in
-const ALPHA_ACCUMULATOR = 0.6;
+const ALPHA_ACCUMULATOR = 17;
 let alpha = 255;
 let show_line = false;
 
@@ -158,12 +158,12 @@ function draw() {
       }
     }
     if(!mode_change){
+      if(alpha < 255){
+        alpha += ALPHA_ACCUMULATOR;
+      }else{
+        alpha = 255;
+      }
       for(let i = 0; i < NUM; ++i){
-        if(alpha < 255){
-          alpha += ALPHA_ACCUMULATOR;
-        }else{
-          alpha = 255;
-        }
         fill(33,33,33,alpha);
         textSize(14);
         text(emperors[i].name, emperors[i].location.x + 280, emperors[i].location.y);
@@ -175,10 +175,17 @@ function draw() {
   }else if(mode === 1){ // timeline layout
     strokeWeight(2);
     stroke(0,0,0,50);
-    // line(0, 660 , windowWidth, 660);
-    line(horizontalMargin - 20, 660 , windowWidth - horizontalMargin + 22, 660);
+    line(0, 660 , windowWidth, 660);
+    // line(horizontalMargin - 20, 660 , windowWidth - horizontalMargin + 22, 660);
+    if(!mode_change){
+      if(alpha < 255){
+        alpha += ALPHA_ACCUMULATOR;
+      }else{
+        alpha = 255;
+      }
+    }
     strokeWeight(12);
-    stroke(235,118,107);
+    stroke(235,118,107,alpha);
     point(map(emperors_data.length[0], 276, 421, horizontalMargin, windowWidth - horizontalMargin),660);
     point(map(emperors_data.length[1], 276, 421, horizontalMargin, windowWidth - horizontalMargin),660);
     strokeWeight(2);
@@ -186,21 +193,34 @@ function draw() {
     map(emperors_data.length[1], 276, 421, horizontalMargin, windowWidth - horizontalMargin),660);
     // textAlign(LEFT, CENTER);
     textSize(20);
-    fill(33);
+    // fill(33);
     noStroke();
     textAlign(CENTER, CENTER);
-    // fill(150);
-    // text("Timeline", 60 ,644);
+    fill(150);
+    text("Timeline", 60 ,644);
+    fill(235,118,107,alpha);
     text(emperors_data.length[0]+" AD",map(emperors_data.length[0], 276, 421, horizontalMargin, windowWidth - horizontalMargin),690);
     text(emperors_data.length[1]+" AD",map(emperors_data.length[1], 276, 421, horizontalMargin, windowWidth - horizontalMargin),690);
+    stroke(193);
+    strokeWeight(1);
+    line(map(300, 276, 421, horizontalMargin, windowWidth - horizontalMargin),0,
+        map(300, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight);
+    line(map(350, 276, 421, horizontalMargin, windowWidth - horizontalMargin),0,
+        map(350, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight);
+    line(map(400, 276, 421, horizontalMargin, windowWidth - horizontalMargin),0,
+        map(400, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight);
+    fill(193);
+    noStroke();
+    textAlign(LEFT, CENTER);
+    text("300", 5 + map(300, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight - 40);
+    text("350", 5 + map(350, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight - 40);
+    text("400", 5 + map(400, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight - 40);
+
     emperors.forEach(function(element){
       if(mouseX > (element.location.x - 24) && mouseX < (element.died_in_window.x + 6)
         && mouseY > (element.location.y - 24)&& mouseY < (element.location.y + 24)){
           element.is_hover = true;
           element.show_line = true;
-          push();
-
-          pop();
       }
     });
 
@@ -365,7 +385,7 @@ function mousePressed(){
 function toList(){
   if(mode === 1 || mode === 2){
     mode_change = true;
-    alpha = 60;
+    alpha = 0;
   }
   mode = 0;
   is_moving = true;
@@ -377,6 +397,7 @@ function toList(){
   }
 }
 function toTimeline(){
+  alpha = 0;
   mode = 1;
   is_moving = true;
   mode_change = true;
