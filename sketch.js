@@ -41,7 +41,7 @@ let tree_layout = [];
 let targets = [];
 
 let buttons = [];
-let button_labels = ["List","Chronological","Family Tree"];
+let button_labels = ["List","Timeline","Tree"];
 
 let images = [];
 let emperors = [];
@@ -51,6 +51,8 @@ const NUM = 11;
 let black_labels = [];
 let red_labels = [];
 let test;
+
+let shadow;
 
  // fade in
 const ALPHA_ACCUMULATOR = 17;
@@ -71,7 +73,7 @@ function setup() {
   for (let i = 0; i < 3; i++ ) {
     black_labels[i] = loadImage( 'data/' + i + 'g.png' );
   }
-
+  let shadow = loadImage( 'data/shadow.png' );
   // initialize locations
   for(let i = 0; i < NUM; ++i){
     list_layout[i] = createVector(windowWidth / 8 + 160, 108 + 52 * i + 70);
@@ -106,23 +108,26 @@ function setup() {
   console.log(emperors[0].born_in_window);
   console.log(emperors[0].died_in_window);
 
-  buttons[0] = createButton("List");
-  buttons[1] = createButton("Time");
-  buttons[2] = createButton("Tree");
+  for(let i = 0; i < 3; ++i){
+    buttons.push(new Button(red_labels[i],black_labels[i],button_labels[i],55, 90 * i + 50, 13 , i, shadow));
+  }
+  // buttons[0] = createButton("List");
+  // buttons[1] = createButton("Time");
+  // buttons[2] = createButton("Tree");
   // buttons[0] = createButton('List');
   // buttons[1] = createButton('Timeline');
   // buttons[2] = createButton('Tree');
 
-  buttons.forEach(function(element,i) {
-    element.position(20, 80 * i + 20);
-    element.addClass('button');
+  // buttons.forEach(function(element,i) {
+  //   element.position(20, 80 * i + 20);
+  //   element.addClass('button');
     // element.addClass('button:hover');
     // element.addClass('button:focus');
-  });
-  buttons[0].mousePressed(toList);
-  buttons[1].mousePressed(toTimeline);
-  buttons[2].mousePressed(toTree);
-  buttons[0].attribute('autofocus', 'true');
+  // });
+  // buttons[0].mousePressed(toList);
+  // buttons[1].mousePressed(toTimeline);
+  // buttons[2].mousePressed(toTree);
+  // buttons[0].attribute('autofocus', 'true');
   // test = createP("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
   // test .position(20, 20);
   // button.mouseOver(onList).mouseOut(outList);
@@ -311,12 +316,25 @@ function draw() {
   }
   if(!is_moving){mode_change = false;} // *****3 if is_moving is false, that means all the members are done with moving, so mode_change is over, change it to false.
   for(let i = 0; i < 3; ++i){
-    imageMode(CENTER);
-    if(mode === i){
-      image(red_labels[i], 120, 80 * i + 50, red_labels[i].width/13, red_labels[i].height/13);
-    }else{
-      image(black_labels[i], 120, 80 * i + 50, black_labels[i].width/13, black_labels[i].height/13);
-    }
+    // imageMode(CENTER);
+    // if(mode === i){
+    //   image(red_labels[i], 120, 80 * i + 50, red_labels[i].width/13, red_labels[i].height/13);
+    // }else{
+    //   image(black_labels[i], 120, 80 * i + 50, black_labels[i].width/13, black_labels[i].height/13);
+    // }
+    buttons.forEach(function(element, i){
+      let distance = dist(mouseX, mouseY, element.location.x, element.location.y);
+      if(distance < 30 || mode === i){
+        element.on = true;
+        // element.is_hover = true;
+      }else{
+        element.on = false;
+        // element.is_hover = false;
+      }
+
+      if(distance < 30){element.is_hover = true;}else{element.is_hover = false;}
+    });
+    buttons[i].display();
   }
 
   emperors.forEach(function(element){
@@ -374,8 +392,17 @@ function keyPressed(){
 function mousePressed(){
   // 3 buttons for mode changing
 
+  buttons.forEach(function(element, i){
+    let distance = dist(mouseX, mouseY, element.location.x, element.location.y);
+    if(distance < 30){
+      mode = i;
+    }
+    if(mode === 0){toList();}else if(mode === 1){toTimeline();}else if(mode === 2){toTree();}
+
+  });
 
   if(mode === 0){// 4 buttons in list layout mode for sorting;
+    // let buffer = emperors[0].location.x;
     if(mouseX > (emperors[0].location.x - 24) && mouseX < (emperors[0].location.x + 280)
       && mouseY > 130 && mouseY < 150){
         for(let i = 0; i < mode_0_sort.length; ++i){
@@ -406,20 +433,22 @@ function mousePressed(){
           mode_0_sort[i] = false;
         }
         mode_0_sort[3] = true;
+        inverted = false;
         toList();
     }
     if(mouseX > (emperors[0].location.x + 700) && mouseX < (emperors[0].location.x + 810)
       && mouseY > 130 && mouseY < 150){
+        inverted = !inverted;
         for(let i = 0; i < mode_0_sort.length; ++i){
           mode_0_sort[i] = false;
         }
         mode_0_sort[3] = true;
-        inverted = !inverted;
         if(inverted){
           toListInvert();
         }else{
           toList();
         }
+        console.log(inverted);
     }
 
   }else if(mode === 2){// click for detail in tree mode
@@ -443,7 +472,7 @@ function toList(){
   mode_0_sort[3] = true;
   mode = 0;
   is_moving = true;
-  inverted = false;
+  // inverted = false;
   emperors.sort((a, b)=> a.order-b.order);
   console.log(emperors);
   for(let i = 0; i < NUM; ++i){
@@ -459,6 +488,7 @@ function toTimeline(){
   mode = 1;
   is_moving = true;
   mode_change = true;
+  inverted = false;
   emperors.sort((a, b)=> a.order-b.order);
   console.log(emperors);
   for(let i = 0; i < NUM; ++i){
@@ -473,6 +503,7 @@ function toTimeline(){
 function toTree(){
   mode_change = true;
   is_moving = true;
+  inverted = false;
   mode = 2;
   emperors.sort((a, b)=> a.order-b.order);
   console.log(emperors);
@@ -560,5 +591,7 @@ function toListInvert(){
     element.contentHTML.hide();
   });
 }
+
+
 // function onList(){button.style('background-color', 'black');}
 // function outList(){button.style('background-color', 'rgb(242,242,242)');}

@@ -205,3 +205,73 @@ class FamilyMember{
     }
   }
 }
+class Button{
+  constructor(on_image, off_image, tag, position_x, position_y, size, i, shadow){
+    this.on_image = on_image;
+    this.off_image = off_image;
+    this.tag = tag;
+    this.location = createVector(position_x, position_y);
+    this.size = size;
+    this.on = false;
+    this.id = i;
+    this.shadow = shadow;
+    this.is_hover;
+  }
+  display(){
+    let acc = 0.1;
+    imageMode(CENTER);
+    push();
+    translate(this.location.x,this.location.y);
+    // ellipse(0,0,60,60);
+    image(this.shadow, 0, 0, this.shadow.width/12, this.shadow.height/12);
+    if(this.is_hover){
+      textAlign(CENTER, CENTER);
+      textSize(16);
+      fill(80);
+      noStroke();
+      text(this.tag,0,42);
+    }
+    if(this.on){
+      noStroke();
+      fill(255);
+      ellipse(0,0,55,55);
+      if(this.id === 0){
+        translate(4,0);
+      }
+      if(this.is_hover){
+        if(this.size > 14){
+          this.size -= acc;
+        }else{
+          this.size = 14;
+        }
+      }else{
+        if(this.size < 15){
+          this.size += acc;
+        }else{
+          this.size = 15;
+        }
+      }
+      image(this.on_image, 0, 0, this.on_image.width/this.size, this.on_image.height/this.size);
+    }else{
+      if(this.id === 0){
+        translate(4,0);
+      }
+      if(this.is_hover){
+        if(this.size > 14){
+          this.size -= acc;
+        }else{
+          this.size = 14;
+        }
+      }else{
+        if(this.size < 15){
+          this.size += acc;
+        }else{
+          this.size = 15;
+        }
+      }
+      image(this.off_image, 0, 0, this.off_image.width/this.size, this.off_image.height/this.size);
+    }
+    pop();
+
+  }
+}
