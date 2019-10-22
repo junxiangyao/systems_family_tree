@@ -324,7 +324,7 @@ function keyPressed(){
 function toList(){
   if(mode === 1 || mode === 2){
     mode_change = true;
-    alpha = 0;
+    alpha = 60;
   }
   mode = 0;
   is_moving = true;
