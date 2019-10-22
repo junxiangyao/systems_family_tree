@@ -86,6 +86,8 @@ class FamilyMember{
     noStroke();
     if(mode === 0){
       text(this.posthumous_name,32,0);
+    }else if(mode === 1 && this.is_hover){
+      text(this.posthumous_name_eng + " -- " + this.name_eng,32,0);
     }else{
       text(this.posthumous_name_eng,32,0);
     }
@@ -120,12 +122,16 @@ class FamilyMember{
       translate(this.location.x + 4, this.location.y - 10);
       textAlign(LEFT, CENTER);
       textSize(14);
-      fill(100);
+      fill(150);
       noStroke();
-      text(this.born,0,660 - this.location.y);
-      text(this.died,this.died_in_window.x - this.born_in_window.x,660 - this.location.y);
+      text(this.born,0,660 - this.location.y + 22);
+      text(this.died,this.died_in_window.x - this.born_in_window.x,660 - this.location.y + 22);
       fill(235,118,107);
-      text(this.reign_start,this.reign_start_in_window.x - this.born_in_window.x,660 - this.location.y);
+      if((this.reign_end - this.reign_start) < 4){
+        text(this.reign_start,this.reign_start_in_window.x - this.born_in_window.x,660 - this.location.y - 14);
+      }else{
+        text(this.reign_start,this.reign_start_in_window.x - this.born_in_window.x,660 - this.location.y);
+      }
       text(this.reign_end,this.reign_end_in_window.x - this.born_in_window.x, 660 - this.location.y);
       pop();
     }
@@ -141,7 +147,7 @@ class FamilyMember{
       strokeWeight(2);
       line(0, 17, 0, 660 - this.location.y);
       line((this.died_in_window.x - this.born_in_window.x), 17, (this.died_in_window.x - this.born_in_window.x), 660 - this.location.y);
-      strokeWeight(6);
+      strokeWeight(5);
       point(0, 660 - this.location.y);
       point(this.died_in_window.x - this.born_in_window.x, 660 - this.location.y);
       // red reign dots
@@ -157,6 +163,9 @@ class FamilyMember{
       }
       fill(240);
       ellipse((this.reign_start_in_window.x - this.born_in_window.x), 660 - this.location.y, 10, 10);
+      stroke(193);
+      strokeWeight(5);
+      point(this.died_in_window.x - this.born_in_window.x, 660 - this.location.y);
       pop();
     }
   }

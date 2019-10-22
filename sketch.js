@@ -52,8 +52,11 @@ let black_labels = [];
 let red_labels = [];
 let test;
 
-const ALPHA_ACCUMULATOR = 1;
-let alpha = 255; // fade in
+ // fade in
+const ALPHA_ACCUMULATOR = 0.6;
+let alpha = 255;
+
+
 function setup() {
   createCanvas(windowWidth,windowHeight);
   // load images
@@ -66,30 +69,36 @@ function setup() {
   for (let i = 0; i < 3; i++ ) {
     black_labels[i] = loadImage( 'data/' + i + 'g.png' );
   }
+
   // initialize locations
   for(let i = 0; i < NUM; ++i){
     list_layout[i] = createVector(windowWidth / 8 + 160, 108 + 52 * i + 70);
   }
+
   // for starters, assign list locations as targets
   for(let i = 0; i < NUM; ++i){
     targets[i] = list_layout[i].copy();
   }
+
   // setup
   for (let i = 0; i < NUM; i++ ) {
     emperors.push(new FamilyMember(emperors_data.emperors[i], images[i], list_layout[i].x, list_layout[i].y,targets[i]));
   }
+
+  // initialize timeline layout
   for(let i = 0; i < NUM; ++i){
-    emperors[i].born_in_window = createVector(map(emperors[i].born, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 110 + 50 * i);
-    emperors[i].died_in_window = createVector(map(emperors[i].died, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 110 + 50 * i);
-    emperors[i].reign_start_in_window = createVector(map(emperors[i].reign_start, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 110 + 50 * i);
-    emperors[i].reign_end_in_window = createVector(map(emperors[i].reign_end, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 110 + 50 * i);
+    emperors[i].born_in_window = createVector(map(emperors[i].born, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 110 + 48 * i);
+    emperors[i].died_in_window = createVector(map(emperors[i].died, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 110 + 48 * i);
+    emperors[i].reign_start_in_window = createVector(map(emperors[i].reign_start, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 110 + 48 * i);
+    emperors[i].reign_end_in_window = createVector(map(emperors[i].reign_end, 276, 421, horizontalMargin, windowWidth - horizontalMargin), 110 + 48 * i);
     timeline_layout[i] =   emperors[i].born_in_window.copy();
   }
 
+  // initialize tree layout
   for(let i = 0; i < NUM; ++i){
     tree_layout[i] = createVector(horizontalMargin + emperors[i].generation * 300, windowHeight/2 + 120 * tree_element_height[i]);
   }
-
+  // -----------------------------------------------------
   console.log(emperors[0].name_chn);
   console.log(windowHeight);
   console.log(emperors[0].born_in_window);
@@ -119,6 +128,8 @@ function setup() {
 
 function draw() {
   background(240);
+
+  //------------------------ title ----------------------------------
   textAlign(CENTER, CENTER);
   textSize(30);
   fill(33);
@@ -126,10 +137,9 @@ function draw() {
   text("Family tree of Eastern Jin Emperors", windowWidth/2 ,46);
   textSize(22);
   text("317 - 420 AD, China", windowWidth/2 ,82);
-  // stroke(1);
-  // line(windowWidth/2-90,110,windowWidth/2+90,110)
 
-  if(mode === 0){
+  //------------------------ settings for different modes ----------------------
+  if(mode === 0){ // list layout
     textAlign(LEFT, CENTER);
     textSize(16);
     fill(33);
@@ -150,6 +160,8 @@ function draw() {
       for(let i = 0; i < NUM; ++i){
         if(alpha < 255){
           alpha += ALPHA_ACCUMULATOR;
+        }else{
+          alpha = 255;
         }
         fill(33,33,33,alpha);
         textSize(14);
@@ -159,12 +171,12 @@ function draw() {
         text(emperors[i].order + 1, emperors[i].location.x + 700, emperors[i].location.y);
       }
     }
-  }else if(mode === 1){
+  }else if(mode === 1){ // timeline layout
     strokeWeight(2);
     stroke(0,0,0,50);
     // line(0, 660 , windowWidth, 660);
     line(horizontalMargin - 20, 660 , windowWidth - horizontalMargin + 22, 660);
-    strokeWeight(16);
+    strokeWeight(12);
     stroke(235,118,107);
     point(map(emperors_data.length[0], 276, 421, horizontalMargin, windowWidth - horizontalMargin),660);
     point(map(emperors_data.length[1], 276, 421, horizontalMargin, windowWidth - horizontalMargin),660);
@@ -180,7 +192,19 @@ function draw() {
     // text("Timeline", 60 ,644);
     text(emperors_data.length[0]+" AD",map(emperors_data.length[0], 276, 421, horizontalMargin, windowWidth - horizontalMargin),690);
     text(emperors_data.length[1]+" AD",map(emperors_data.length[1], 276, 421, horizontalMargin, windowWidth - horizontalMargin),690);
-  }else if(mode === 2){
+    emperors.forEach(function(element){
+      if(mouseX > (element.location.x - 24) && mouseX < (element.died_in_window.x + 6)
+        && mouseY > (element.location.y - 24)&& mouseY < (element.location.y + 24)){
+          element.is_hover = true;
+          element.show_line = true;
+          push();
+          
+          pop();
+      }
+    });
+
+
+  }else if(mode === 2){ // tree layout
     for(let i = 0; i < NUM; ++i){
       textAlign(RIGHT,CENTER);
       textSize(20);
@@ -241,8 +265,13 @@ function draw() {
       image(black_labels[i], 120, 80 * i + 50, black_labels[i].width/13, black_labels[i].height/13);
     }
   }
-}
 
+  emperors.forEach(function(element){
+    element.is_hover = false;
+    element.show_line = false;
+  });
+  console.log(alpha);
+}
 
 function keyPressed(){
   if (keyCode === 48) {
@@ -320,7 +349,11 @@ function keyPressed(){
     }
   }
 }
+function mousePressed(){
+  // 3 buttons for mode changing
 
+  // 4 buttons in list layout mode for sorting;
+}
 function toList(){
   if(mode === 1 || mode === 2){
     mode_change = true;
