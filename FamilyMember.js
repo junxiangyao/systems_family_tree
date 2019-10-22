@@ -2,7 +2,7 @@ class FamilyMember{
   constructor(data, character, start_location_x, start_location_y){
     this.data = data;
     this.posthumous_name = data.posthumousName[0]+ " (" + data.posthumousName[1] + ")"
-    // this.posthumous_name = data.posthumousName[0]
+    this.posthumous_name_chn = data.posthumousName[1]
     this.posthumous_name_eng = data.posthumousName[0]
     this.name_chn = data.name[1];
     this.name_eng = data.name[0];
@@ -29,6 +29,10 @@ class FamilyMember{
     this.reign_end_in_window;
     this.is_hover = false;
     this.show_line = false;
+    this.is_click = false;
+    this.contentHTML = createA(this.data.wiki,"Wikipedia");
+    this.contentHTML.attribute("target","_blank");
+    this.contentHTML.style("font_size","12px");
   }
 
   // Method to update location
@@ -96,6 +100,26 @@ class FamilyMember{
     pop();
   }
 
+  showP(){
+    if(this.is_hover){
+      push();
+      translate(this.location.x, this.location.y);
+      textAlign(LEFT, CENTER);
+      textSize(14);
+      fill(33);
+      noStroke();
+      text(this.name_eng,32,20);
+      text("Lifespan: " + this.lifespan,32,40);
+      text("Reign: " + this.reign,32,60);
+      pop();
+      this.contentHTML.show();
+      this.contentHTML.position(this.location.x + 32, this.location.y + 70);
+    }else{
+      this.contentHTML.hide();
+    }
+
+
+  }
   drawSpan(){
     // stroke(0,0,0,50);
     stroke(193,193,193);

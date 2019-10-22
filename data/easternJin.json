@@ -9,7 +9,8 @@
       "reign":[318,323],
       "generation": 0,
       "order": 0,
-      "lifespan": 47
+      "lifespan": 47,
+      "wiki": "https://en.wikipedia.org/wiki/Emperor_Yuan_of_Jin"
     },
     {"name":["Sima Shao", "司马绍"],
       "posthumousName":["Emperor Ming of Jin", "晋明帝"],
@@ -18,7 +19,8 @@
       "reign":[323,325],
       "generation": 1,
       "order": 1,
-      "lifespan": 26
+      "lifespan": 26,
+      "wiki": "https://en.wikipedia.org/wiki/Emperor_Yuan_of_Jin"
     },
     {"name":["Sima Yan", "司马衍"],
       "posthumousName":["Emperor Cheng of Jin", "晋成帝"],
@@ -27,7 +29,8 @@
       "reign":[325,342],
       "generation": 2,
       "order": 2,
-      "lifespan": 22
+      "lifespan": 22,
+      "wiki": "https://en.wikipedia.org/wiki/Emperor_Yuan_of_Jin"
     },
     {"name":["Sima Yue", "司马岳"],
       "posthumousName":["Emperor kang of Jin", "晋康帝"],
@@ -36,7 +39,8 @@
       "reign":[342,344],
       "generation": 2,
       "order": 3,
-      "lifespan": 22
+      "lifespan": 22,
+      "wiki": "https://en.wikipedia.org/wiki/Emperor_Yuan_of_Jin"
     },
     {"name":["Sima Dan", "司马聃"],
       "posthumousName":["Emperor Mu of Jin", "晋穆帝"],
@@ -45,7 +49,8 @@
       "reign":[344,361],
       "generation": 3,
       "order": 4,
-      "lifespan": 18
+      "lifespan": 18,
+      "wiki": "https://en.wikipedia.org/wiki/Emperor_Yuan_of_Jin"
     },
     {"name":["Sima Pi", "司马丕"],
       "posthumousName":["Emperor Ai of Jin", "晋哀帝"],
@@ -54,7 +59,8 @@
       "reign":[361,365],
       "generation": 3,
       "order": 5,
-      "lifespan": 24
+      "lifespan": 24,
+      "wiki": "https://en.wikipedia.org/wiki/Emperor_Yuan_of_Jin"
     },
     {"name":["Sima Yi", "司马奕"],
       "posthumousName":["Emperor Fei of Jin", "晋废帝"],
@@ -63,7 +69,8 @@
       "reign":[365,372],
       "generation": 3,
       "order": 6,
-      "lifespan": 44
+      "lifespan": 44,
+      "wiki": "https://en.wikipedia.org/wiki/Emperor_Yuan_of_Jin"
     },
     {"name":["Sima Yu", "司马昱"],
       "posthumousName":["Emperor Jianwen of Jin", "晋简文帝"],
@@ -72,7 +79,8 @@
       "reign":[372,372],
       "generation": 1,
       "order": 7,
-      "lifespan": 52
+      "lifespan": 52,
+      "wiki": "https://en.wikipedia.org/wiki/Emperor_Yuan_of_Jin"
     },
     {"name":["Sima Yao", "司马曜"],
       "posthumousName":["Emperor Xiaowu of Jin", "晋孝武帝"],
@@ -81,7 +89,8 @@
       "reign":[372,396],
       "generation": 2,
       "order": 8,
-      "lifespan": 34
+      "lifespan": 34,
+      "wiki": "https://en.wikipedia.org/wiki/Emperor_Yuan_of_Jin"
     },
     {"name":["Sima Dezong", "司马德宗"],
       "posthumousName":["Emperor An of Jin", "晋安帝"],
@@ -90,7 +99,8 @@
       "reign":[396,419],
       "generation": 3,
       "order": 9,
-      "lifespan": 37
+      "lifespan": 37,
+      "wiki": "https://en.wikipedia.org/wiki/Emperor_Yuan_of_Jin"
     },
     {"name":["Sima Dewen", "司马德文"],
       "posthumousName":["Emperor Gong of Jin", "晋恭帝"],
@@ -99,7 +109,8 @@
       "reign":[419,420],
       "generation": 3,
       "order": 10,
-      "lifespan": 35
+      "lifespan": 35,
+      "wiki": "https://en.wikipedia.org/wiki/Emperor_Yuan_of_Jin"
     }
   ]
 }

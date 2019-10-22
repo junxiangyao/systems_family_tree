@@ -123,8 +123,8 @@ function setup() {
   buttons[1].mousePressed(toTimeline);
   buttons[2].mousePressed(toTree);
   buttons[0].attribute('autofocus', 'true');
-
-
+  // test = createP("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
+  // test .position(20, 20);
   // button.mouseOver(onList).mouseOut(outList);
 }
 
@@ -274,6 +274,14 @@ function draw() {
       line(targets[1].x - 88, targets[1].y , targets[7].x - 88, targets[7].y);
       line(targets[2].x - 88, targets[2].y , targets[3].x - 88, targets[3].y);
     }
+
+    emperors.forEach(function(element){
+      if(mouseX > (element.location.x - 24) && mouseX < (element.location.x + 50)
+        && mouseY > (element.location.y - 24)&& mouseY < (element.location.y + 24)){
+          element.is_hover = true;
+          console.log("!!!!!!");
+      }
+    });
   }
 
   is_moving = false;  // *****1 set is_moving to false no matter what
@@ -294,6 +302,8 @@ function draw() {
       // if(this.is_hover){
         emperors[i].showNumbers();
       // }
+    }else if(mode===2){
+      emperors[i].showP();
     }
     emperors[i].display(mode);
     if(emperors[i].is_moving){ // *****2 check if there is any moving members, if there is one, change is_moving to true
@@ -316,7 +326,6 @@ function draw() {
       element.show_line = false;
     }
   });
-  console.log(inverted);
 
   //------------------------ title ----------------------------------
   textAlign(CENTER, CENTER);
