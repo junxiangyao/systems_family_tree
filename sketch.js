@@ -56,7 +56,8 @@ let test;
 const ALPHA_ACCUMULATOR = 17;
 let alpha = 255;
 let show_line = false;
-
+let mode_0_sort = [false,false,false,true];
+let inverted = false;
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
@@ -130,26 +131,47 @@ function setup() {
 function draw() {
   background(240);
 
-  //------------------------ title ----------------------------------
-  textAlign(CENTER, CENTER);
-  textSize(30);
-  fill(33);
-  noStroke();
-  text("Family tree of Eastern Jin Emperors", windowWidth/2 ,46);
-  textSize(22);
-  text("317 - 420 AD, China", windowWidth/2 ,82);
-
   //------------------------ settings for different modes ----------------------
   if(mode === 0){ // list layout
     textAlign(LEFT, CENTER);
     textSize(16);
     fill(33);
+    if((mouseX > (emperors[0].location.x - 24) && mouseX < (emperors[0].location.x + 280)
+      && mouseY > 130 && mouseY < 150) || mode_0_sort[0]){
+        fill(235,118,107);
+    }
     noStroke();
     text("POSTHUMOUS NAME", emperors[0].location.x + 32, 140);
+    fill(33);
+    if(mouseX > (emperors[0].location.x + 280) && mouseX < (emperors[0].location.x + 480)
+      && mouseY > 130 && mouseY < 150 || mode_0_sort[1]){
+        fill(235,118,107);
+    }
     text("NAME", emperors[0].location.x + 280, 140);
+    fill(33);
+    if(mouseX > (emperors[0].location.x + 480) && mouseX < (emperors[0].location.x + 600)
+      && mouseY > 130 && mouseY < 150 || mode_0_sort[2]){
+        fill(235,118,107);
+    }
     text("LIFESPAN", emperors[0].location.x + 480, 140);
+    fill(33);
+    if(mouseX > (emperors[0].location.x + 600) && mouseX < (emperors[0].location.x + 810)
+      && mouseY > 130 && mouseY < 150 || mode_0_sort[3]){
+        fill(235,118,107);
+        if(mouseX > (emperors[0].location.x + 700) && mouseX < (emperors[0].location.x + 810)){
+          push();
+          translate(emperors[0].location.x + 766, 140);
+          if(inverted){
+            triangle(0, -5, -5, 5, 5, 5);
+          }else{
+            triangle(0, 5, -5, -5, 5, -5);
+          }
+          pop();
+        }
+    }
     text("REIGN", emperors[0].location.x + 600, 140);
     text("ORDER", emperors[0].location.x + 700, 140);
+    fill(33);
     for(let i = 0; i < NUM; ++i){
       fill(230);
       if(i%2 === 0){
@@ -171,11 +193,26 @@ function draw() {
         text(emperors[i].reign, emperors[i].location.x + 600, emperors[i].location.y);
         text(emperors[i].order + 1, emperors[i].location.x + 700, emperors[i].location.y);
       }
+
     }
   }else if(mode === 1){ // timeline layout
     strokeWeight(2);
     stroke(0,0,0,50);
     line(0, 660 , windowWidth, 660);
+    stroke(193);
+    strokeWeight(1);
+    line(map(300, 276, 421, horizontalMargin, windowWidth - horizontalMargin),0,
+        map(300, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight);
+    line(map(350, 276, 421, horizontalMargin, windowWidth - horizontalMargin),0,
+        map(350, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight);
+    line(map(400, 276, 421, horizontalMargin, windowWidth - horizontalMargin),0,
+        map(400, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight);
+    fill(193);
+    noStroke();
+    textAlign(LEFT, CENTER);
+    text("300 AD", 5 + map(300, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight - 40);
+    text("350 AD", 5 + map(350, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight - 40);
+    text("400 AD", 5 + map(400, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight - 40);
     // line(horizontalMargin - 20, 660 , windowWidth - horizontalMargin + 22, 660);
     if(!mode_change){
       if(alpha < 255){
@@ -201,20 +238,6 @@ function draw() {
     fill(235,118,107,alpha);
     text(emperors_data.length[0]+" AD",map(emperors_data.length[0], 276, 421, horizontalMargin, windowWidth - horizontalMargin),690);
     text(emperors_data.length[1]+" AD",map(emperors_data.length[1], 276, 421, horizontalMargin, windowWidth - horizontalMargin),690);
-    stroke(193);
-    strokeWeight(1);
-    line(map(300, 276, 421, horizontalMargin, windowWidth - horizontalMargin),0,
-        map(300, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight);
-    line(map(350, 276, 421, horizontalMargin, windowWidth - horizontalMargin),0,
-        map(350, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight);
-    line(map(400, 276, 421, horizontalMargin, windowWidth - horizontalMargin),0,
-        map(400, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight);
-    fill(193);
-    noStroke();
-    textAlign(LEFT, CENTER);
-    text("300", 5 + map(300, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight - 40);
-    text("350", 5 + map(350, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight - 40);
-    text("400", 5 + map(400, 276, 421, horizontalMargin, windowWidth - horizontalMargin),windowHeight - 40);
 
     emperors.forEach(function(element){
       if(mouseX > (element.location.x - 24) && mouseX < (element.died_in_window.x + 6)
@@ -293,7 +316,16 @@ function draw() {
       element.show_line = false;
     }
   });
-  console.log(alpha);
+  console.log(inverted);
+
+  //------------------------ title ----------------------------------
+  textAlign(CENTER, CENTER);
+  textSize(30);
+  fill(33);
+  noStroke();
+  text("Family tree of Eastern Jin Emperors", windowWidth/2 ,46);
+  textSize(22);
+  text("317 - 420 AD, China", windowWidth/2 ,82);
 }
 
 function keyPressed(){
@@ -316,71 +348,72 @@ function keyPressed(){
       targets[i] = list_layout[i].copy();
     }
   } else if(keyCode === 52){ // 4 age
-    if(mode === 1 || mode === 2){
-      mode_change = true;
-    }
-    mode = 0;
-    is_moving = true;
-    emperors.sort((a, b)=> a.born-b.born);
-    console.log(emperors);
-    for(let i = 0; i < NUM; ++i){
-      emperors[i].is_moving = true;
-      targets[i] = list_layout[i].copy();
-    }
+    toListAge();
   } else if(keyCode === 53){ // 5 name alphabetical
-    if(mode === 1 || mode === 2){
-      mode_change = true;
-    }
-    mode = 0;
-    is_moving = true;
-    emperors.sort(function(a, b){
-      if(a.name_eng < b.name_eng) { return -1; }
-      if(a.name_eng > b.name_eng) { return 1; }
-      return 0;
-    });
-    console.log(emperors);
-    for(let i = 0; i < NUM; ++i){
-      emperors[i].is_moving = true;
-      targets[i] = list_layout[i].copy();
-    }
+    toListName();
   } else if(keyCode === 54){ // 6 posthumous_name alphabetical
-    if(mode === 1 || mode === 2){
-      mode_change = true;
-    }
-    mode = 0;
-    is_moving = true;
-    emperors.sort(function(a, b){
-      if(a.posthumous_name < b.posthumous_name) { return -1; }
-      if(a.posthumous_name > b.posthumous_name) { return 1; }
-      return 0;
-    });
-    console.log(emperors);
-    for(let i = 0; i < NUM; ++i){
-      emperors[i].is_moving = true;
-      targets[i] = list_layout[i].copy();
-    }
+    toListPosthumous();
   } else if(keyCode === 57){ // 9
-    if(mode === 1 || mode === 2){
-      mode_change = true;
-    }
-    mode = 0;
-    is_moving = true;
-    console.log(emperors);
-    for(let i = 0; i < NUM; ++i){
-      emperors[i].is_moving = true;
-      targets[i] = list_layout[NUM - i - 1].copy();
-    }
+    toListInvert();
   }else if(keyCode === 76){ // l
     if(mode === 1){
       emperors.forEach((element)=>element.show_line = !element.show_line);
     }
     show_line = !show_line;
   }
+
 }
 function mousePressed(){
   // 3 buttons for mode changing
 
   // 4 buttons in list layout mode for sorting;
+  if(mode === 0){
+    if(mouseX > (emperors[0].location.x - 24) && mouseX < (emperors[0].location.x + 280)
+      && mouseY > 130 && mouseY < 150){
+        for(let i = 0; i < mode_0_sort.length; ++i){
+          mode_0_sort[i] = false;
+        }
+        mode_0_sort[0] = true;
+        toListPosthumous();
+    }
+    if(mouseX > (emperors[0].location.x + 280) && mouseX < (emperors[0].location.x + 480)
+      && mouseY > 130 && mouseY < 150){
+        for(let i = 0; i < mode_0_sort.length; ++i){
+          mode_0_sort[i] = false;
+        }
+        mode_0_sort[1] = true;
+        toListName();
+    }
+    if(mouseX > (emperors[0].location.x + 480) && mouseX < (emperors[0].location.x + 600)
+      && mouseY > 130 && mouseY < 150){
+        for(let i = 0; i < mode_0_sort.length; ++i){
+          mode_0_sort[i] = false;
+        }
+        mode_0_sort[2] = true;
+        toListAge();
+    }
+    if(mouseX > (emperors[0].location.x + 600) && mouseX < (emperors[0].location.x + 700)
+      && mouseY > 130 && mouseY < 150){
+        for(let i = 0; i < mode_0_sort.length; ++i){
+          mode_0_sort[i] = false;
+        }
+        mode_0_sort[3] = true;
+        toList();
+    }
+    if(mouseX > (emperors[0].location.x + 700) && mouseX < (emperors[0].location.x + 810)
+      && mouseY > 130 && mouseY < 150){
+        for(let i = 0; i < mode_0_sort.length; ++i){
+          mode_0_sort[i] = false;
+        }
+        mode_0_sort[3] = true;
+        inverted = !inverted;
+        if(inverted){
+          toListInvert();
+        }else{
+          toList();
+        }
+    }
+  }
 }
 function toList(){
   if(mode === 1 || mode === 2){
@@ -389,6 +422,7 @@ function toList(){
   }
   mode = 0;
   is_moving = true;
+  inverted = false;
   emperors.sort((a, b)=> a.order-b.order);
   console.log(emperors);
   for(let i = 0; i < NUM; ++i){
@@ -417,6 +451,65 @@ function toTree(){
   for(let i = 0; i < NUM; ++i){
     emperors[i].is_moving = true;
     targets[i] = tree_layout[i].copy();
+  }
+}
+function toListAge(){
+  if(mode === 1 || mode === 2){
+    mode_change = true;
+  }
+  mode = 0;
+  is_moving = true;
+  emperors.sort((a, b)=> a.born-b.born);
+  console.log(emperors);
+  for(let i = 0; i < NUM; ++i){
+    emperors[i].is_moving = true;
+    targets[i] = list_layout[i].copy();
+  }
+}
+function toListName(){
+  if(mode === 1 || mode === 2){
+    mode_change = true;
+  }
+  mode = 0;
+  is_moving = true;
+  emperors.sort(function(a, b){
+    if(a.name_eng < b.name_eng) { return -1; }
+    if(a.name_eng > b.name_eng) { return 1; }
+    return 0;
+  });
+  console.log(emperors);
+  for(let i = 0; i < NUM; ++i){
+    emperors[i].is_moving = true;
+    targets[i] = list_layout[i].copy();
+  }
+}
+function toListPosthumous(){
+  if(mode === 1 || mode === 2){
+    mode_change = true;
+  }
+  mode = 0;
+  is_moving = true;
+  emperors.sort(function(a, b){
+    if(a.posthumous_name < b.posthumous_name) { return -1; }
+    if(a.posthumous_name > b.posthumous_name) { return 1; }
+    return 0;
+  });
+  console.log(emperors);
+  for(let i = 0; i < NUM; ++i){
+    emperors[i].is_moving = true;
+    targets[i] = list_layout[i].copy();
+  }
+}
+function toListInvert(){
+  if(mode === 1 || mode === 2){
+    mode_change = true;
+  }
+  mode = 0;
+  is_moving = true;
+  console.log(emperors);
+  for(let i = 0; i < NUM; ++i){
+    emperors[i].is_moving = true;
+    targets[i] = list_layout[NUM - i - 1].copy();
   }
 }
 // function onList(){button.style('background-color', 'black');}
