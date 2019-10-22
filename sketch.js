@@ -55,6 +55,7 @@ let test;
  // fade in
 const ALPHA_ACCUMULATOR = 0.6;
 let alpha = 255;
+let show_line = false;
 
 
 function setup() {
@@ -198,7 +199,7 @@ function draw() {
           element.is_hover = true;
           element.show_line = true;
           push();
-          
+
           pop();
       }
     });
@@ -268,7 +269,9 @@ function draw() {
 
   emperors.forEach(function(element){
     element.is_hover = false;
-    element.show_line = false;
+    if(!show_line){
+      element.show_line = false;
+    }
   });
   console.log(alpha);
 }
@@ -347,6 +350,11 @@ function keyPressed(){
       emperors[i].is_moving = true;
       targets[i] = list_layout[NUM - i - 1].copy();
     }
+  }else if(keyCode === 76){ // l
+    if(mode === 1){
+      emperors.forEach((element)=>element.show_line = !element.show_line);
+    }
+    show_line = !show_line;
   }
 }
 function mousePressed(){

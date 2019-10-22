@@ -128,7 +128,8 @@ class FamilyMember{
       text(this.died,this.died_in_window.x - this.born_in_window.x,660 - this.location.y + 22);
       fill(235,118,107);
       if((this.reign_end - this.reign_start) < 4){
-        text(this.reign_start,this.reign_start_in_window.x - this.born_in_window.x,660 - this.location.y - 14);
+        // text(this.reign_start,this.reign_start_in_window.x - this.born_in_window.x,660 - this.location.y - 14);
+        text(this.reign_start,this.reign_start_in_window.x - this.born_in_window.x - 32,660 - this.location.y);
       }else{
         text(this.reign_start,this.reign_start_in_window.x - this.born_in_window.x,660 - this.location.y);
       }
