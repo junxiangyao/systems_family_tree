@@ -48,14 +48,21 @@ let emperors = [];
 
 const NUM = 11;
 
-let button;
+let black_labels = [];
+let red_labels = [];
+let test;
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
   // load images
   for (let i = 0; i < NUM; i++ ) {
-    // images[i] = loadImage( 'data/gaki.jpg' );
     images[i] = loadImage( 'data/' + i + '.png' );
+  }
+  for (let i = 0; i < 3; i++ ) {
+    red_labels[i] = loadImage( 'data/' + i + 'r.png' );
+  }
+  for (let i = 0; i < 3; i++ ) {
+    black_labels[i] = loadImage( 'data/' + i + 'g.png' );
   }
   // initialize locations
   for(let i = 0; i < NUM; ++i){
@@ -86,21 +93,25 @@ function setup() {
   console.log(emperors[0].born_in_window);
   console.log(emperors[0].died_in_window);
 
-
-  buttons[0] = createButton('List');
-  buttons[1] = createButton('Timeline');
-  buttons[2] = createButton('Tree');
+  buttons[0] = createButton("List");
+  buttons[1] = createButton("Time");
+  buttons[2] = createButton("Tree");
+  // buttons[0] = createButton('List');
+  // buttons[1] = createButton('Timeline');
+  // buttons[2] = createButton('Tree');
 
   buttons.forEach(function(element,i) {
     element.position(20, 80 * i + 20);
     element.addClass('button');
-    element.addClass('button:hover');
-    element.addClass('button:focus');
+    // element.addClass('button:hover');
+    // element.addClass('button:focus');
   });
   buttons[0].mousePressed(toList);
   buttons[1].mousePressed(toTimeline);
   buttons[2].mousePressed(toTree);
   buttons[0].attribute('autofocus', 'true');
+
+
   // button.mouseOver(onList).mouseOut(outList);
 }
 
@@ -146,6 +157,7 @@ function draw() {
   }else if(mode === 1){
     strokeWeight(2);
     stroke(0,0,0,50);
+    // line(0, 660 , windowWidth, 660);
     line(horizontalMargin - 20, 660 , windowWidth - horizontalMargin + 22, 660);
     strokeWeight(16);
     stroke(235,118,107);
@@ -154,15 +166,41 @@ function draw() {
     strokeWeight(2);
     line(map(emperors_data.length[0], 276, 421, horizontalMargin, windowWidth - horizontalMargin),660,
     map(emperors_data.length[1], 276, 421, horizontalMargin, windowWidth - horizontalMargin),660);
-    textAlign(LEFT, CENTER);
+    // textAlign(LEFT, CENTER);
     textSize(20);
-    fill(10);
+    fill(33);
     noStroke();
     textAlign(CENTER, CENTER);
+    // fill(150);
+    // text("Timeline", 60 ,644);
     text(emperors_data.length[0]+" AD",map(emperors_data.length[0], 276, 421, horizontalMargin, windowWidth - horizontalMargin),690);
     text(emperors_data.length[1]+" AD",map(emperors_data.length[1], 276, 421, horizontalMargin, windowWidth - horizontalMargin),690);
   }else if(mode === 2){
-
+    for(let i = 0; i < NUM; ++i){
+      textAlign(RIGHT,CENTER);
+      textSize(20);
+      fill(150);
+      noStroke();
+      text(i + 1 + ".", targets[i].x - 28, targets[i].y);
+      stroke(193);
+      if(i != 0){
+        strokeWeight(2);
+        line(targets[i].x - 88, targets[i].y , targets[i].x - 60, targets[i].y);
+        strokeWeight(5);
+        point(targets[i].x - 60, targets[i].y);
+      }
+      if(emperors[i].generation != 3){
+        strokeWeight(2);
+        line(targets[i].x + 184, targets[i].y , targets[i].x + 210, targets[i].y);
+        strokeWeight(5);
+        point(targets[i].x + 184, targets[i].y);
+      }
+      strokeWeight(2);
+      line(targets[5].x - 88, targets[5].y , targets[6].x - 88, targets[6].y); // hard coded vertical lines
+      line(targets[9].x - 88, targets[9].y , targets[10].x - 88, targets[10].y); // hard coded vertical lines
+      line(targets[1].x - 88, targets[1].y , targets[7].x - 88, targets[7].y);
+      line(targets[2].x - 88, targets[2].y , targets[3].x - 88, targets[3].y);
+    }
   }
 
   is_moving = false;  // *****1 set is_moving to false no matter what
@@ -190,6 +228,14 @@ function draw() {
     }
   }
   if(!is_moving){mode_change = false;} // *****3 if is_moving is false, that means all the members are done with moving, so mode_change is over, change it to false.
+  for(let i = 0; i < 3; ++i){
+    imageMode(CENTER);
+    if(mode === i){
+      image(red_labels[i], 120, 80 * i + 50, red_labels[i].width/13, red_labels[i].height/13);
+    }else{
+      image(black_labels[i], 120, 80 * i + 50, black_labels[i].width/13, black_labels[i].height/13);
+    }
+  }
 }
 
 
